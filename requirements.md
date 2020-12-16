@@ -1,0 +1,37 @@
+# functional
+        - administrator
+                - censor parts of all issues/comments
+                - add a coder account
+                - change account names
+                - add labels
+                - delete collaborator/coder account
+        - coders
+                - close issue
+                - change account password
+                - edit account information
+                - add a collaborator account
+                - edit all issue titles
+                - view the `hidden` bugtracker
+                - add/edit labels on all issues
+                - assign issues to coders
+                - filter issues list (hidden)
+                - comment on all issues
+                - mark own/guest comments/posts as censored
+                - ban guest IP
+        - collaborators
+                - change account password
+                - log in/out
+                - add labels to their own issues
+                - assign issue to themselves if not already assigned
+                - filter issues list (assigned, collaborating)
+                - comment on `collaborating` issues
+        - guests
+                - close own issue
+                - filter issues list (own, public, labels)
+                - view the `public` bugtracker
+                - submit bug issue
+                - comment on `public` and own issues
+                - edit their own issues/comments up to 30min after submitting
+
+# non-functional
+        - speed
