@@ -1,0 +1,23 @@
+# roadmap
+- tests
+        - after each and every step
+- database
+        - models
+        - migrations
+
+- REST API
+        - swagger
+        - routes
+- JSON
+        - serialisation/deserialisation
+        - auto-fill data
+                - post excerpt
+        - input/output validation
+- back-end
+        - functionality
+        - authentication and authorisation
+- front-end
+        - React
+- logging
+        - ticket/comment/account history
+- notification system
