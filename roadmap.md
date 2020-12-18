@@ -4,8 +4,12 @@
         - migrations
         ~ tests 0.1
 - REST API
+        + routes 0.1
         - swagger
-        - routes
+                + routes 0.1
+                - docs
+                - examples
+        - tests
 - JSON
         + deserialisation 0.1
         - serialisation
