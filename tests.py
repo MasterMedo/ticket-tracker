@@ -300,6 +300,19 @@ class TestPostSchema(BaseTestCase):
         assert post.submitter == self.dummy_user
         assert post.id is not None
 
+    def test_valid_post_with_labels(self):
+        json = {'title': 'test', 'content': 'This is a test.'}
+        json.update({'submitter': self.dummy_user,
+                     'category': self.dummy_category,
+                     'labels': [self.dummy_label]})
+        schema = PostSchema()
+        post = schema.load(json, session=db.session)
+        db.session.add(post)
+        db.session.commit()
+        assert post.excerpt == post.content
+        assert post.labels == [self.dummy_label]
+        assert post.id is not None
+
 
 class TestCommentSchema(BaseTestCase):
     def test_valid_post(self):

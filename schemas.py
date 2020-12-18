@@ -38,6 +38,13 @@ class PostSchema(SQLAlchemyAutoSchema):
     excerpt = fields.String(validate=validate.Length(1, 120), required=False)
     submitter = fields.Raw(required=True)
     category = fields.Raw(required=True)
+    labels = fields.Raw(required=False)
+
+    @validates('labels')
+    def validate_labels(self, labels):
+        if not isinstance(labels, list)\
+                or any(not isinstance(label, Label) for label in labels):
+            raise ValidationError('Wrong type for field.')
 
     @validates('submitter')
     def validate_submitter(self, submitter):
@@ -58,7 +65,7 @@ class PostSchema(SQLAlchemyAutoSchema):
                 data['excerpt'] = data['content'].split('\n')[0].strip()[:120]
 
         if 'title' in data:
-            data['title'] = data['title'].strip()
+            data['title'] = data['title'].strip().capitalize()
 
         return data
 
