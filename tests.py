@@ -199,7 +199,7 @@ class TestUserSchema(BaseTestCase):
         db.session.commit()
 
     def test_valid_put(self):
-        json = {'username': 'test', 'email': 'test.test@test.com'}
+        json = {'username': 'test'}
         json.update({'accounttype': self.dummy_accounttype})
         schema = UserSchema()
         user = schema.load(json, instance=self.dummy_user,
@@ -271,6 +271,60 @@ class TestUserSchema(BaseTestCase):
             user = UserSchema().load(json, session=db.session)
             db.session.add(user)
             db.session.commit()
+
+
+class TestPostSchema(BaseTestCase):
+    def test_valid_post(self):
+        json = {'title': 'test', 'content': 'This is a test.'}
+        json.update({'submitter': self.dummy_user,
+                     'category': self.dummy_category})
+        schema = PostSchema()
+        post = schema.load(json, session=db.session)
+        db.session.add(post)
+        db.session.commit()
+        assert post.excerpt == post.content
+        assert post.id is not None
+
+    def test_valid_put(self):
+        json = {'title': 'test', 'content': 'This is a test number 2.'}
+        json.update({'category': self.dummy_category})
+        schema = PostSchema()
+        post = schema.load(json, instance=self.dummy_post,
+                           partial=True, session=db.session,)
+        db.session.add(post)
+        db.session.commit()
+        assert post == self.dummy_post
+        assert post.id == self.dummy_post.id
+        assert post.title == 'test'
+        assert post.content == 'This is a test number 2.'
+        assert post.submitter == self.dummy_user
+        assert post.id is not None
+
+
+class TestCommentSchema(BaseTestCase):
+    def test_valid_post(self):
+        json = {'content': 'This is a test.'}
+        json.update({'submitter': self.dummy_user,
+                     'post': self.dummy_post})
+        schema = CommentSchema()
+        comment = schema.load(json, session=db.session)
+        db.session.add(comment)
+        db.session.commit()
+        assert comment.id is not None
+
+    def test_valid_put(self):
+        json = {'content': 'This is a test number 2.'}
+        json.update({'post': self.dummy_post})
+        schema = CommentSchema()
+        comment = schema.load(json, instance=self.dummy_comment,
+                              partial=True, session=db.session,)
+        db.session.add(comment)
+        db.session.commit()
+        assert comment == self.dummy_comment
+        assert comment.id == self.dummy_post.id
+        assert comment.content == 'This is a test number 2.'
+        assert comment.submitter == self.dummy_user
+        assert comment.id is not None
 
 
 if __name__ == '__main__':

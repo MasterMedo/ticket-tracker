@@ -8,11 +8,59 @@ class CommentSchema(SQLAlchemyAutoSchema):
         model = Comment
         load_instance = True
 
+    submitter = fields.Raw(required=True)
+    post = fields.Raw(required=True)
+
+    @validates('submitter')
+    def validate_submitter(self, submitter):
+        if not isinstance(submitter, User):
+            raise ValidationError('Wrong type for field.')
+
+    @validates('post')
+    def validate_post(self, post):
+        if not isinstance(post, Post):
+            raise ValidationError('Wrong type for field.')
+
+    @pre_load
+    def strip_content(self, data, **kwargs):
+        if 'content' in data:
+            data['content'] = data['content'].strip()
+        return data
+
 
 class PostSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Post
         load_instance = True
+
+    title = fields.String(validate=validate.Length(1, 120), required=True)
+    content = fields.String(validate=validate.Length(1, 65536), required=True)
+    excerpt = fields.String(validate=validate.Length(1, 120), required=False)
+    submitter = fields.Raw(required=True)
+    category = fields.Raw(required=True)
+
+    @validates('submitter')
+    def validate_submitter(self, submitter):
+        if not isinstance(submitter, User):
+            raise ValidationError('Wrong type for field.')
+
+    @validates('category')
+    def validate_category(self, category):
+        if not isinstance(category, Category):
+            raise ValidationError('Wrong type for field.')
+
+    @pre_load
+    def preprocess(self, data, **kwargs):
+        if 'content' in data:
+            data['content'] = data['content'].strip()
+
+            if 'excerpt' not in data:
+                data['excerpt'] = data['content'].split('\n')[0].strip()[:120]
+
+        if 'title' in data:
+            data['title'] = data['title'].strip()
+
+        return data
 
 
 class AccounttypeSchema(SQLAlchemyAutoSchema):
@@ -21,6 +69,12 @@ class AccounttypeSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
     name = fields.String(validate=validate.Length(1, 50))
+
+    @pre_load
+    def lowercase_username(self, data, **kwargs):
+        if 'name' in data:
+            data['name'] = data['name'].lower()
+        return data
 
 
 class UserSchema(SQLAlchemyAutoSchema):
@@ -33,6 +87,11 @@ class UserSchema(SQLAlchemyAutoSchema):
                              required=True)
     email = fields.Email(required=True, validate=validate.Length(1, 120))
     accounttype = fields.Raw(required=True)
+
+    @validates('accounttype')
+    def validate_category(self, accounttype):
+        if not isinstance(accounttype, Accounttype):
+            raise ValidationError('Wrong type for field.')
 
     @pre_load
     def lowercase_username(self, data, **kwargs):
@@ -48,6 +107,12 @@ class LabelSchema(SQLAlchemyAutoSchema):
 
     name = fields.String(validate=validate.Length(1, 50), required=True)
 
+    @pre_load
+    def lowercase_username(self, data, **kwargs):
+        if 'name' in data:
+            data['name'] = data['name'].lower()
+        return data
+
 
 class CategorySchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -55,3 +120,9 @@ class CategorySchema(SQLAlchemyAutoSchema):
         load_instance = True
 
     name = fields.String(validate=validate.Length(1, 50))
+
+    @pre_load
+    def lowercase_username(self, data, **kwargs):
+        if 'name' in data:
+            data['name'] = data['name'].lower()
+        return data
