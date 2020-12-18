@@ -8,7 +8,10 @@ db = SQLAlchemy()
 @dataclass
 class Comment(db.Model):
     id: int = db.Column(db.Integer, primary_key=True)
-    post_id: int = db.Column(db.Integer, db.ForeignKey('post.id'))
+    post_id: int = db.Column(db.Integer, db.ForeignKey('post.id'),
+                             nullable=False)
+    submitter_id: int = db.Column(db.Integer, db.ForeignKey('user.id'),
+                                  nullable=False)
     censored: bool = db.Column(db.Boolean, nullable=False, default=False)
     content: str = db.Column(db.Text, nullable=False)
 
@@ -19,9 +22,12 @@ class Comment(db.Model):
 @dataclass
 class Post(db.Model):
     id: int = db.Column(db.Integer, primary_key=True)
-    user_id: int = db.Column(db.Integer, db.ForeignKey('user.id'))
-    category_id: int = db.Column(db.Integer, db.ForeignKey('category.id'))
-    timestamp: datetime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    submitter_id: int = db.Column(db.Integer, db.ForeignKey('user.id'),
+                                  nullable=False)
+    category_id: int = db.Column(db.Integer, db.ForeignKey('category.id'),
+                                 nullable=False)
+    timestamp: datetime = db.Column(db.DateTime, nullable=False,
+                                    default=datetime.utcnow)
     answered: bool = db.Column(db.Boolean, nullable=False, default=False)
     censored: bool = db.Column(db.Boolean, nullable=False, default=False)
     locked: bool = db.Column(db.Boolean, nullable=False, default=False)
@@ -39,10 +45,13 @@ class Post(db.Model):
 @dataclass
 class User(db.Model):
     id: int = db.Column(db.Integer, primary_key=True)
-    username: str = db.Column(db.String(30), unique=True)
+    username: str = db.Column(db.String(30), unique=True, nullable=False)
     email: str = db.Column(db.String(120), unique=True, nullable=False)
-    posts: Post = db.relationship('Post', backref='user')
-    accounttype_id: int = db.Column(db.Integer, db.ForeignKey('accounttype.id'))
+    posts: Post = db.relationship('Post', backref='submitter')
+    comments: Comment = db.relationship('Comment', backref='submitter')
+    accounttype_id: int = db.Column(db.Integer,
+                                    db.ForeignKey('accounttype.id'),
+                                    nullable=False)
 
     def __repr__(self):
         return f'<User {self.username}>'
