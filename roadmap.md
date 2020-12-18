@@ -1,21 +1,21 @@
 # roadmap
-- tests
-        - after each and every step
 - database
-        - models
+        ~ models 0.1
         - migrations
-
+        ~ tests 0.1
 - REST API
         - swagger
         - routes
 - JSON
-        - serialisation/deserialisation
-        - auto-fill data
-                - post excerpt
-        - input/output validation
+        + deserialisation 0.1
+        - serialisation
+        + auto-fill data 0.1
+        + input validation 0.1
+        ~ tests 0.1
 - back-end
         - functionality
         - authentication and authorisation
+        - sessions and permissions
 - front-end
         - React
 - logging
