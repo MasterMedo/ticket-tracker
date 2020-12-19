@@ -3,6 +3,7 @@
         + models 0.1
         - migrations
         + unit tests 0.1
+        + database filler 0.1
 - JSON
         + deserialisation 0.1
         ~ serialisation 0.1 hacky
@@ -26,6 +27,8 @@
         - functionality
         - authentication and authorisation
         - sessions and permissions
+- deploy the application
+        - AWS
 - logging
         - ticket/comment/account history
 - notification system
