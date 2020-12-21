@@ -1,76 +1,63 @@
-import React, {FunctionComponent}  from 'react';
-import moment from 'moment';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  RouteComponentProps,
+  Switch,
+  Route,
+  Link,
+  useParams
+} from "react-router-dom";
+import { TicketList } from './components/TicketList'
+import { CreateTicket } from './components/CreateTicket'
 import './App.css';
 
-function App() {
-        return(<TicketList/>);
-}
+export default function App() {
+  return(
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li style={{display: 'inline'}}>
+              <Link to="/">Home </Link>
+            </li>
+            <li style={{display: 'inline'}}>
+              <Link to="/tickets/new">New ticket </Link>
+            </li>
+            <li style={{display: 'inline'}}>
+              <Link to="/users">Users</Link>
+            </li>
+          </ul>
+        </nav>
 
-class TicketList extends React.Component {
-  render() {
-    const tickets = [
-      {
-        "answered": true,
-        "content": "Is this even a ticket?",
-        "excerpt": "post 1",
-        "id": 1,
-        "submitter_id": 1,
-        "timestamp": "2020-12-18T16:00:52.286032",
-        "title": "First Post"
-      },
-      {
-        "answered": false,
-        "content": "Is this even a ticket?",
-        "excerpt": "post 2",
-        "id": 2,
-        "submitter_id": 1,
-        "timestamp": "2020-12-19T16:00:52.286032",
-        "title": "Second Post"
-      }];
-    console.log(tickets)
-    console.log(tickets[0])
-    return (
-      <ul>
-        {tickets.map(ticket =>
-          <li>
-            <TicketRow ticket={ticket}/>
-          </li>
-        )}
-      </ul>
-    );
-  }
-}
-
-export const TicketRow: FunctionComponent<any> = ({ticket}: any) => {
-  console.log(ticket)
-  const answered = ticket.answered ?
-  <span style={{color: 'red'}}>CLOSED</span> :
-  <span style={{color: 'green'}}>OPEN</span>;
-  return (
-    <div className="flex-d box-row position-relative border rounded-2 m-2">
-      <div className="flex-auto min-width-0 p-0">
-        <a className="v-align-middle h4"
-            href={"posts/" + ticket.id.toString()}>
-          {ticket.title}
-        </a>
-        <div className="text-small text-grey">
-          <span>
-            #{ticket.id} opened
-            <time title={ticket.timestamp} className=""
-                  dateTime={ticket.timestamp}>
-                {" " + moment(ticket.timestamp).fromNow()}
-            </time> by
-            <a href="...">
-                {" " + ticket.submitter_id}
-            </a>
-          </span>
-        </div>
-        <div>
-          <span>{answered}</span>
-        </div>
+        <Switch>
+          <Route path="/tickets/new" component={NewPost}/>
+          <Route path="/tickets/:id" component={ViewTicket}/>
+          <Route path="/users" component={Users}/>
+          <Route path="/" component={Home}/>
+        </Switch>
       </div>
+    </Router>
+  );
+}
+
+function Home() {
+  return (
+    <div>
+      <CreateTicket/>
+      <TicketList/>
     </div>
   );
 }
 
-export default App;
+function NewPost() {
+  return <CreateTicket/>;
+}
+
+function Users() {
+  return <h2>Users</h2>;
+}
+
+function ViewTicket(){
+  const { id } = useParams<{id: string}>();
+  return <p>{id}</p>;
+}
