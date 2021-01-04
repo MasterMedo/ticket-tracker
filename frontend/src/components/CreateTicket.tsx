@@ -7,7 +7,7 @@ export const CreateTicket = () => {
       content: '',
     },
     onSubmit: values => {
-      fetch("/posts/questions", {
+      fetch("/tickets/questions", {
         method: "POST",
         headers: {
           'Accept': 'application/json',

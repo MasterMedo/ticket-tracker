@@ -7,7 +7,7 @@ interface Props {
 
 export const TicketRow = ({ticket}: Props) => {
   function deleter() {
-    fetch(`/posts/${ticket.id}`, {
+    fetch(`/tickets/${ticket.id}`, {
       method: "delete",
     });
   }
