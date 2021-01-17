@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
-  RouteComponentProps,
   Switch,
   Route,
-  Link,
-  useParams
+  Link
 } from "react-router-dom";
-import { TicketList } from './components/TicketList'
+import { TicketFilterableList } from './components/TicketFilterableList'
 import { CreateTicket } from './components/CreateTicket'
+import { PreviewTicket } from './components/PreviewTicket'
+import { Auth } from './models/Auth'
 import './App.css';
 
+
 export default function App() {
+  const [token, setToken] = useState<string>('what');
+  useEffect (() => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: "mastermedo",
+        password: "password"
+      })
+    }
+    fetch("/auth", requestOptions)
+      .then(r => r.json())
+      .then((data: Auth) => setToken(data.access_token));
+  }, []);
   return(
     <Router>
       <div>
@@ -30,34 +45,16 @@ export default function App() {
         </nav>
 
         <Switch>
-          <Route path="/tickets/new" component={NewPost}/>
-          <Route path="/tickets/:id" component={ViewTicket}/>
+          <Route path="/tickets/new" component={CreateTicket}/>
+          <Route path="/tickets/:id" component={PreviewTicket}/>
           <Route path="/users" component={Users}/>
-          <Route path="/" component={Home}/>
+          <Route path="/" component={TicketFilterableList}/>
         </Switch>
       </div>
     </Router>
   );
 }
 
-function Home() {
-  return (
-    <div>
-      <CreateTicket/>
-      <TicketList/>
-    </div>
-  );
-}
-
-function NewPost() {
-  return <CreateTicket/>;
-}
-
 function Users() {
   return <h2>Users</h2>;
-}
-
-function ViewTicket(){
-  const { id } = useParams<{id: string}>();
-  return <p>{id}</p>;
 }

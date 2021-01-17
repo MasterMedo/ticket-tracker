@@ -1,16 +1,28 @@
+import { useState, useEffect } from 'react';
+import { Ticket } from '../models/Ticket';
+import { useParams } from 'react-router-dom';
 import moment from 'moment';
-import {Ticket} from '../models/Ticket';
 
-interface Props {
-  ticket: Ticket;
+interface ParamTypes {
+  id: string
 }
 
-export const TicketRow = ({ticket}: Props) => {
+export const PreviewTicket = () => {
+  const [ticket, setTicket] = useState<Ticket>({answered: false, timestamp: 'hehe', submitter_id: 3, id: 4, title: 'aouch', content: ''});
+  let { id } = useParams<ParamTypes>();
+
+  useEffect(() => {
+    fetch(`/tickets/${id}`)
+      .then(r => r.json())
+      .then((data: Ticket) => setTicket(data));
+  }, [id, ticket]);
+
   function deleter() {
     fetch(`/tickets/${ticket.id}`, {
       method: "delete",
     });
   }
+
   const answered = ticket.answered ?
   <span style={{color: 'red'}}>CLOSED</span> :
   <span style={{color: 'green'}}>OPEN</span>;
@@ -33,6 +45,9 @@ export const TicketRow = ({ticket}: Props) => {
             </a>
           </span>
         </div>
+        <p>
+          {ticket.content}
+        </p>
         <div>
           <span>{answered}</span>
         </div>

@@ -4,4 +4,5 @@ export interface Ticket {
   answered: boolean;
   timestamp: string;
   submitter_id: number;
+  content: string;
 };

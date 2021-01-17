@@ -18,27 +18,23 @@ export const CreateTicket = () => {
   });
   return (
     <form onSubmit={formik.handleSubmit}
-      className="border rounded-2 m-2">
-      <div style={{float: 'left'}}>
-        <label className="" style={{display: 'block'}}
-        htmlFor="title">title</label>
-        <input className="" style={{display: 'block'}}
+      className="block border rounded-2 m-2">
+      <div>
+        <input className="block ticket-form-title"
           id="title" name="title" type="string"
+          placeholder="Title"
           onChange={formik.handleChange}
           value={formik.values.title}
         />
       </div>
-      <br style={{clear: 'both'}}/>
-      <div style={{float: 'left'}}>
-        <label className="" style={{display: 'block'}}
-          htmlFor="content">content</label>
-        <textarea className="ticket-form-content" style={{display: 'block'}}
+      <div className="ticket-form-content-parent">
+        <textarea className="ticket-form-content"
           id="content" name="content"
+          placeholder="content"
           onChange={formik.handleChange}
           value={formik.values.content}
         />
       </div>
-      <br style={{clear: 'both'}}/>
       <button type="submit">Submit</button>
     </form>
   );
