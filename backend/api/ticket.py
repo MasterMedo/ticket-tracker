@@ -1,11 +1,13 @@
-from flask import jsonify
+from flask import jsonify, request
 from flask_restx import Resource
+from sqlalchemy import and_
 
 from api import api, model
 from models import db
 from models.ticket import Ticket
 from models.user import User
 from models.category import Category
+from models.label import Label
 from schemas.ticket import TicketSchema
 
 
@@ -55,7 +57,32 @@ class TicketControllerNew(Resource):
 
 @api.route('/tickets/')
 class TicketControllerN(Resource):
+    @api.doc(params={
+        'category': {'in': 'query', 'description': 'ticket category (e.g. questions)'},
+        'label': {'in': 'query', 'description': 'one of the labels a ticket must contain (e.g. enhancement)'},
+        'submitter': {'in': 'query', 'description': 'submitter username (e.g. mastermedo)'},
+        'answered': {'in': 'query', 'description': 'true or false (e.g. true)'},
+        # 'project': {'in': 'query', 'description': 'project name (e.g. typetest)'},
+        # 'sort': {'in': 'query', 'description': 'parameters to sort by (e.g. submitter+asc,category+desc)', 'default': 'updated+asc'},
+        # 'count': {'in': 'query', 'description': 'number of records (e.g. 10)'},
+    })
     def get(self):
-        """ Get all tickets """
-        tickets = Ticket.query.all()
+        """ Get all tickets, filter by query """
+        filters = []
+        if 'category' in request.args:
+            category_id = Category.query\
+                .filter(Category.name == request.args['category']).one().id
+            filters.append(Ticket.category_id == category_id)
+        if 'submitter' in request.args:
+            submitter_id = User.query\
+                .filter(User.username == request.args['submitter']).one().id
+            filters.append(Ticket.submitter_id == submitter_id)
+        if 'answered' in request.args:
+            answered = request.args['answered'] == 'true'
+            filters.append(Ticket.answered == answered)
+        # if 'label' in request.args:
+        #     label_id = Label.query\
+        #         .filter(Label.name == request.args['label']).one().id
+        #     filters.append(Ticket.label_id == label_id)
+        tickets = Ticket.query.filter(and_(*filters)).all()
         return jsonify(tickets)

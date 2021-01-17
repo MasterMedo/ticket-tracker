@@ -10,12 +10,12 @@ from flask_cors import CORS
 from models import db
 from api import api_bp, jwt
 from api.accounttype import *  # noqa
-from api.user import *  # noqa
-from api.ticket import *  # noqa
+from api.auth import *  # noqa
 from api.category import *  # noqa
 from api.comment import *  # noqa
 from api.label import *  # noqa
-from api.auth import *  # noqa
+from api.ticket import *  # noqa
+from api.user import *  # noqa
 
 
 class CustomJSONEncoder(JSONEncoder):
