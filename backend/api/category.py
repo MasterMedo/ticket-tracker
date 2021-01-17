@@ -39,3 +39,9 @@ class CategoryControllerNew(Resource):
         db.session.add(category)
         db.session.commit()
         return jsonify(category)
+
+    def get(self):
+        """ Get all categories """
+        categories = Category.query.all()
+        print(categories)
+        return jsonify(categories)

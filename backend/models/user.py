@@ -10,6 +10,7 @@ class User(db.Model):
     id: int = db.Column(db.Integer, primary_key=True)
     username: str = db.Column(db.String(30), unique=True, nullable=False)
     email: str = db.Column(db.String(120), unique=True, nullable=False)
+
     tickets: Ticket = db.relationship('Ticket', backref='submitter')
     comments: Comment = db.relationship('Comment', backref='submitter')
     accounttype_id: int = db.Column(db.Integer,

@@ -6,6 +6,7 @@
                 - add labels
                 - delete collaborator/coder account
                 - see post/comment history 1.0
+        - project/team managers
         - coders
                 - create project
                 - close issue
@@ -26,6 +27,7 @@
                 - add project members
                 - set project milestones 2.0
                 - set project releases 2.0
+                - set priorities
         - collaborators
                 - change account password
                 - log in/out
@@ -46,6 +48,7 @@
                 - subscribe, unsubscribe to issues 1.0
                 - close tickets in collaborating projects
                         - notify project members and subscribers 1.0
+                - vote on issues
         - guests
                 - create a ticket
                 - close own ticket
@@ -55,5 +58,6 @@
                 - view the `public` bugtracker
                 - comment on `public` and own issues
                 - edit their own issues/comments up to 30min after submitting 1.0
+                - vote on public issues
 # non-functional
         - speed

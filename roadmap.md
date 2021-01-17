@@ -20,7 +20,7 @@
         - integration tests (postman/newman)
 - front-end
         - React
-          - components
+          ~ components
           - models
           - tests
 - back-end

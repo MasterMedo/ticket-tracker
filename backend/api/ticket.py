@@ -13,7 +13,7 @@ from schemas.ticket import TicketSchema
 class TicketController(Resource):
     def get(self, id):
         """ Get ticket by id """
-        ticket = Ticket.query.filter_by(id == id).one()
+        ticket = Ticket.query.filter_by(id=id).one()
 
         return jsonify(ticket)
 
@@ -51,3 +51,11 @@ class TicketControllerNew(Resource):
         db.session.add(ticket)
         db.session.commit()
         return jsonify(ticket)
+
+
+@api.route('/tickets/')
+class TicketControllerN(Resource):
+    def get(self):
+        """ Get all tickets """
+        tickets = Ticket.query.all()
+        return jsonify(tickets)

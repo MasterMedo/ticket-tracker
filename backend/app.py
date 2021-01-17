@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 
 from flask import Flask
@@ -7,13 +8,14 @@ from flask_marshmallow import Marshmallow
 from flask_cors import CORS
 
 from models import db
-from api import api_bp
-from api.accounttype import *
-from api.user import *
-from api.ticket import *
-from api.category import *
-from api.comment import *
-from api.label import *
+from api import api_bp, jwt
+from api.accounttype import *  # noqa
+from api.user import *  # noqa
+from api.ticket import *  # noqa
+from api.category import *  # noqa
+from api.comment import *  # noqa
+from api.label import *  # noqa
+from api.auth import *  # noqa
 
 
 class CustomJSONEncoder(JSONEncoder):
@@ -28,12 +30,17 @@ class CustomJSONEncoder(JSONEncoder):
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test13.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", os.urandom(24))
+app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET_KEY", os.urandom(24))
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=7)
 app.json_encoder = CustomJSONEncoder
 db.app = app
 db.init_app(app)
 ma = Marshmallow(app)
 CORS(app)
 app.register_blueprint(api_bp)
+jwt.init_app(app)
 
 
 if __name__ == '__main__':
