@@ -1,34 +1,62 @@
 # roadmap
-- database
-        + models 0.1
-        - migrations
-        + unit tests 0.1
-        + database filler 0.1
-- JSON
-        + deserialisation 0.1
-        ~ serialisation 0.1 hacky
-        + auto-fill data 0.1
-        + input validation 0.1
-        + unit tests 0.1
-- REST API
+    "-" no implementation
+    "~" partial implementation
+    "+" functional implementation
+
+    + database
+      + models 0.1
+      + migrations 0.1
+      + unit tests 0.1
+      + database filler 0.1
+
+    + JSON/schema
+      + deserialisation 0.1
+      + serialisation 0.1
+      + auto-fill data 0.1
+      + input validation 0.1
+      + unit tests 0.1
+
+    ~ REST API
+      + routes 0.1
+      ~ swagger
         + routes 0.1
-        ~ swagger
-                + routes 0.1
-                - docs
-                - examples
-        + error handlers 0.1
-        - integration tests (postman/newman)
-- front-end
-        - React
-          ~ components
-          - models
-          - tests
-- back-end
-        - functionality
-        - authentication and authorisation
-        - sessions and permissions
-- deploy the application
-        - AWS
-- logging
-        - ticket/comment/account history
-- notification system
+          - gets
+            ~ query/filter
+            - sort
+            - count/limit
+          - puts, posts, deletes
+          - subscribe
+          - unsubscribe
+        - docs
+        - examples
+      + error handlers 0.1
+      - integration tests (postman/newman)
+
+    ~ front-end
+      - React
+        ~ components
+          ~ filterable list
+          - previews
+        ~ models
+        ~ router
+          - links
+        - contexts
+          - authorisation
+          - theme
+      - UI tests
+
+    ~ back-end
+      - functionality
+        - subscriptions/listeners
+      ~ authentication 0.1
+      - authorisation
+      - sessions and permissions
+
+    - deploy the application
+      - containers
+      - AWS
+
+    - logging
+      - ticket/comment/account history
+
+    - notification system
