@@ -1,57 +1,71 @@
 import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
+  Redirect,
   Route,
-  Link
+  Switch,
+  useLocation
 } from "react-router-dom";
 import { TicketFilterableList } from './components/TicketFilterableList'
+import { Header } from './components/Header'
+import { Login } from './components/Login'
 import { CreateTicket } from './components/CreateTicket'
 import { PreviewTicket } from './components/PreviewTicket'
-import { Auth } from './models/Auth'
+import { AuthContext } from './context'
+import { getToken } from './actions'
 import './App.css';
 
 
 export default function App() {
-  const [token, setToken] = useState<string>('what');
-  useEffect (() => {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: "mastermedo",
-        password: "password"
-      })
-    }
-    fetch("/auth", requestOptions)
-      .then(r => r.json())
-      .then((data: Auth) => setToken(data.access_token));
-  }, []);
-  return(
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li style={{display: 'inline'}}>
-              <Link to="/">Home </Link>
-            </li>
-            <li style={{display: 'inline'}}>
-              <Link to="/tickets/new">New ticket </Link>
-            </li>
-            <li style={{display: 'inline'}}>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
+  const [token, setToken] = useState<string>();
 
+  const login = async (username: string, password: string) => {
+    const token = await getToken(username, password);
+    setToken(token);
+    if (!!token) {
+      localStorage.setItem(
+        'userData',
+        token
+      );
+    }
+  }
+
+  const logout = () => {
+    setToken(undefined);
+    localStorage.removeItem('userData');
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('userData');
+    if (!!token) {
+      setToken(token);
+    }
+  }, []);
+
+  const { pathname } = useLocation();
+  return(
+    <>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn: !!token,
+        token: token,
+        login: login,
+        logout: logout
+      }}
+    >
+      <div>
+        <Header />
+        <p>logged in: {(!!token).toString()}</p>
         <Switch>
+          <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
           <Route path="/tickets/new" component={CreateTicket}/>
           <Route path="/tickets/:id" component={PreviewTicket}/>
           <Route path="/users" component={Users}/>
-          <Route path="/" component={TicketFilterableList}/>
+          <Route path="/tickets" component={TicketFilterableList}/>
+          <Route exact path="/" component={Login}/>
         </Switch>
       </div>
-    </Router>
+    </AuthContext.Provider>
+    </>
   );
 }
 

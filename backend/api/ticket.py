@@ -7,8 +7,10 @@ from models import db
 from models.ticket import Ticket
 from models.user import User
 from models.category import Category
-from models.label import Label
 from schemas.ticket import TicketSchema
+from schemas.user import UserSchema
+
+import json
 
 
 @api.route('/tickets/<int:id>')
@@ -28,34 +30,15 @@ class TicketController(Resource):
     @api.expect(model)
     def put(self, id):
         ticket = Ticket.query.filter(Ticket.id == id).one()
-        ticket = TicketSchema().load(api.payload, instance=ticket, partial=True,
-                                     session=db.session)
-        db.session.add(ticket)
-        db.session.commit()
-        return jsonify(ticket)
-
-
-@api.route('/tickets/<category>')
-class TicketControllerNew(Resource):
-    def get(self, category):
-        """ Get all tickets by category """
-        category = Category.query.filter(Category.name == category).one()
-        tickets = Ticket.query.filter(Ticket.category == category).all()
-        return jsonify(tickets)
-
-    @api.expect(model)
-    def post(self, category):
-        mock_user = User.query.first()
-        category = Category.query.filter(Category.name == category).one()
-        api.payload.update({'submitter': mock_user, 'category': category})
-        ticket = TicketSchema().load(api.payload, session=db.session)
-        category
+        ticket = TicketSchema().load(api.payload, instance=ticket,
+                                     partial=True, session=db.session)
         db.session.add(ticket)
         db.session.commit()
         return jsonify(ticket)
 
 
 @api.route('/tickets/')
+@api.route('/tickets')
 class TicketControllerN(Resource):
     @api.doc(params={
         'category': {'in': 'query', 'description': 'ticket category (e.g. questions)'},
@@ -86,3 +69,16 @@ class TicketControllerN(Resource):
         #     filters.append(Ticket.label_id == label_id)
         tickets = Ticket.query.filter(and_(*filters)).all()
         return jsonify(tickets)
+
+    @api.expect(model)
+    def post(self):
+        category_id = json.loads(api.payload['category'])['id']
+        api.payload['category'] = Category.query\
+            .filter_by(id=category_id).one()
+        mock_user = UserSchema().load(data={}, instance=User.query.first(),
+                                      partial=True, session=db.session)
+        api.payload.update({'submitter': mock_user})
+        ticket = TicketSchema().load(api.payload, session=db.session)
+        db.session.add(ticket)
+        db.session.commit()
+        return jsonify(ticket)

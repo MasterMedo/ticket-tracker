@@ -1,13 +1,26 @@
 import { useFormik } from 'formik';
+import { useEffect, useState } from 'react';
+import { Category } from '../models/Category';
 
 export const CreateTicket = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect (() => {
+    fetch("/categories")
+      .then(r => r.json())
+      .then((data: Category[]) => {
+        setCategories(data);
+      });
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       title: '',
+      category: '',
       content: '',
     },
     onSubmit: values => {
-      fetch("/tickets/questions", {
+      fetch(`/tickets`, {
         method: "POST",
         headers: {
           'Accept': 'application/json',
@@ -19,6 +32,18 @@ export const CreateTicket = () => {
   return (
     <form onSubmit={formik.handleSubmit}
       className="block border rounded-2 m-2">
+      <select
+        name="category"
+        onChange={formik.handleChange}
+        value={formik.values.category}
+      >
+        {categories.map(category =>
+          <option key={category.id}
+            label={category.name}
+            value={JSON.stringify(category)}
+          />
+        )}
+      </select>
       <div>
         <input className="block ticket-form-title"
           id="title" name="title" type="string"

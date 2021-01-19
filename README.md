@@ -1,11 +1,14 @@
 # ticket-tracker
-let's build a bug tracker, because why not
+let's build a bug tracker!
 
 ## current state
+refer to the roadmap file, the frontend state can be seen below!
 
-![home](./img/home.png)
+login with JWT tokens:
+![login](./img/login.png)
 
-## sprint 1 --- 16 to 23 Dec 2020
-satisfy the minimal requirements so we can use the ticket tracker to build it
+show tickets within a chosen category:
+![tickets](./img/tickets.png)
 
-refer to the roadmap file
+create a ticket with a given category:
+![create-ticket](./img/create-ticket.png)

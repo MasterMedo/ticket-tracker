@@ -36,6 +36,9 @@
       - React
         ~ components
           ~ filterable list
+            - search
+            - query
+            - sort
           - previews
         ~ models
         ~ router
@@ -53,8 +56,12 @@
       - sessions and permissions
 
     - deploy the application
+      - SSL
       - containers
       - AWS
+        - limit throughput
+        - limit data per hour/day/week
+        - limit requests per hour/day/week
 
     - logging
       - ticket/comment/account history
