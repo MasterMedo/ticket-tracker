@@ -43,5 +43,4 @@ class CategoryControllerNew(Resource):
     def get(self):
         """ Get all categories """
         categories = Category.query.all()
-        print(categories)
         return jsonify(categories)

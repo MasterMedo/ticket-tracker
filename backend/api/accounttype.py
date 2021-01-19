@@ -13,7 +13,7 @@ class AccounttypeController(Resource):
     @jwt_required
     def get(self, accounttype):
         """ Get account type by account type name """
-        print(current_identity)
+        # print(current_identity)
         accounttype = Accounttype.query\
                                  .filter(Accounttype.name == accounttype).one()
         return jsonify(accounttype)
