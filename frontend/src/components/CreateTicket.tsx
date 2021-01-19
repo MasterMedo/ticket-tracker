@@ -1,22 +1,19 @@
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Category } from '../models/Category';
+import { Ticket } from '../models/Ticket';
+import { getCategories } from '../actions';
 
 export const CreateTicket = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
-  useEffect (() => {
-    fetch("/categories")
-      .then(r => r.json())
-      .then((data: Category[]) => {
-        setCategories(data);
-      });
-  }, []);
+  let history = useHistory()
 
   const formik = useFormik({
     initialValues: {
       title: '',
-      category: '',
+      category_id: 0,
       content: '',
     },
     onSubmit: values => {
@@ -26,21 +23,36 @@ export const CreateTicket = () => {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(values, null, 2)});
+        body: JSON.stringify(values, null, 2)
+      }).then(r => {
+        if (r.ok) {
+          return r.json();
+        } else {
+          throw new Error("couldn't add ticket");
+        }
+      }).then((ticket: Ticket) => history.push(`/tickets/${ticket.id}`));
     },
   });
+
+  useEffect (() => {
+    getCategories().then(data => {
+      setCategories(data)
+      formik.values.category_id = data[0].id;
+    });
+  }, []);
+
   return (
     <form onSubmit={formik.handleSubmit}
       className="block border rounded-2 m-2">
       <select
-        name="category"
+        name="category_id"
         onChange={formik.handleChange}
-        value={formik.values.category}
+        value={formik.values.category_id}
       >
         {categories.map(category =>
           <option key={category.id}
             label={category.name}
-            value={JSON.stringify(category)}
+            value={category.id}
           />
         )}
       </select>

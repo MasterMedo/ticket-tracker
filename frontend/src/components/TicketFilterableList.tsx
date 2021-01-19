@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from 'react-router-dom';
 import { TicketList } from './TicketList'
 import { Ticket } from '../models/Ticket';
 import { Category } from '../models/Category';
+import { getCategories } from '../actions';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -14,11 +15,7 @@ export const TicketFilterableList = () => {
   const [query, setQuery] = useState(useQuery());
 
   useEffect (() => {
-    fetch("/categories")
-      .then(r => r.json())
-      .then((data: Category[]) => {
-        setCategories(data);
-      });
+    getCategories().then((data: Category[]) => setCategories(data))
   }, []);
 
   useEffect (() => {

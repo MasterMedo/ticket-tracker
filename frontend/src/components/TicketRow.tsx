@@ -1,16 +1,15 @@
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 import {Ticket} from '../models/Ticket';
+import { deleteTicket } from '../actions';
 
 interface Props {
   ticket: Ticket;
 }
 
 export const TicketRow = ({ticket}: Props) => {
-  function deleter() {
-    fetch(`/tickets/${ticket.id}`, {
-      method: "delete",
-    });
-  }
+  let history = useHistory();
+
   const answered = ticket.answered ?
   <span style={{color: 'red'}}>CLOSED</span> :
   <span style={{color: 'green'}}>OPEN</span>;
@@ -36,7 +35,10 @@ export const TicketRow = ({ticket}: Props) => {
         <div>
           <span>{answered}</span>
         </div>
-        <a onClick={deleter} href="/">delete</a>
+        <button onClick={() => {
+          deleteTicket(ticket.id);
+          history.go(0);
+        }}>delete</button>
       </div>
     </div>
   );

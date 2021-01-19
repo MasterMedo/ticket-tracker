@@ -1,26 +1,31 @@
 import { useState, useEffect } from 'react';
 import { Ticket } from '../models/Ticket';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import moment from 'moment';
+import { getTicket, deleteTicket } from '../actions';
 
 interface ParamTypes {
   id: string
 }
 
 export const PreviewTicket = () => {
-  const [ticket, setTicket] = useState<Ticket>({answered: false, timestamp: 'hehe', submitter_id: 3, id: 4, title: 'aouch', content: ''});
-  let { id } = useParams<ParamTypes>();
+  const [ticket, setTicket] = useState<Ticket>();
+  let id = parseInt(useParams<ParamTypes>().id);
+  let history = useHistory();
 
   useEffect(() => {
-    fetch(`/tickets/${id}`)
-      .then(r => r.json())
-      .then((data: Ticket) => setTicket(data));
-  }, [id, ticket]);
-
-  function deleter() {
-    fetch(`/tickets/${ticket.id}`, {
-      method: "delete",
+    getTicket(id).then(data => {
+      if (!!data.message) {
+        history.push('/tickets');
+        alert(data.message)
+      } else {
+        setTicket(data)
+      }
     });
+  }, []);
+
+  if (!ticket) {
+    return <></>
   }
 
   const answered = ticket.answered ?
@@ -29,10 +34,9 @@ export const PreviewTicket = () => {
   return (
     <div className="flex-d box-row flex-auto min-width-0 position-relative border rounded-2 m-2">
       <div className="flex-auto min-width-0 p-0">
-        <a className="v-align-middle h4"
-            href={`tickets/${ticket.id}`}>
+        <span className="v-align-middle h4">
           {ticket.title}
-        </a>
+        </span>
         <div className="text-small text-grey">
           <span>
             #{ticket.id} opened
@@ -51,7 +55,10 @@ export const PreviewTicket = () => {
         <div>
           <span>{answered}</span>
         </div>
-        <a onClick={deleter} href="/">delete</a>
+        <button onClick={() => {
+          deleteTicket(ticket.id);
+          history.push('/tickets');
+        }}>delete</button>
       </div>
     </div>
   );

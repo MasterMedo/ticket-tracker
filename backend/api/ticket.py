@@ -72,7 +72,8 @@ class TicketControllerN(Resource):
 
     @api.expect(model)
     def post(self):
-        category_id = json.loads(api.payload['category'])['id']
+        print(api.payload)
+        category_id = api.payload.pop('category_id')
         api.payload['category'] = Category.query\
             .filter_by(id=category_id).one()
         mock_user = UserSchema().load(data={}, instance=User.query.first(),
