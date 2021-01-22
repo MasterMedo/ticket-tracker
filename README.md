@@ -12,3 +12,11 @@ show tickets within a chosen category:
 
 create a ticket with a given category:
 ![create-ticket](./img/create-ticket.png)
+
+# todo
+
+#### frontend:
+  - move api calls to actions.ts
+  - auth: create useAuthContext
+  - create login page
+  - create header (add logout button)
