@@ -42,6 +42,5 @@ CORS(app)
 app.register_blueprint(api_bp)
 jwt.init_app(app)
 
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='192.168.0.20', port=5000, debug=True)
