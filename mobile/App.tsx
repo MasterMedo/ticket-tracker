@@ -5,7 +5,6 @@ import {Ticket} from './models/Ticket';
 
 const App = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
-
   useEffect(() => {
     fetch('http://192.168.0.20:5000/tickets')
       .then((r) => r.json())
@@ -13,7 +12,7 @@ const App = () => {
         setTickets(data || []);
       })
       .catch((error) => console.warn(error));
-  });
+  }, []);
 
   return (
     <SafeAreaView>
