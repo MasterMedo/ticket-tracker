@@ -6,7 +6,7 @@ import { Ticket } from '../models/Ticket';
 export const TicketsScreen = ({ navigation }) => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   useEffect(() => {
-    fetch('http://192.168.0.20:5000/tickets')
+    fetch('http://192.168.0.155:5000/tickets')
       .then((r) => r.json())
       .then((data: Ticket[]) => {
         setTickets(data || []);

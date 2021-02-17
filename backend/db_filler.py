@@ -1,4 +1,9 @@
-from models import User, Accounttype, Ticket, Comment, Category, Label
+from models.user import User
+from models.ticket import Ticket
+from models.comment import Comment
+from models.label import Label
+from models.category import Category
+from models.accounttype import Accounttype
 from app import db
 
 
@@ -45,6 +50,7 @@ comment2 = Comment(content='second comment',
 comment3 = Comment(content='third comment',
                    ticket=ticket1,
                    submitter=user_mastermedo)
+
 
 db.create_all()
 
