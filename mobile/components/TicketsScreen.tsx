@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import {
+  Pressable,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  StatusBar,
+} from 'react-native';
 import { TicketList } from '../components/TicketList';
 import { Ticket } from '../models/Ticket';
+import { TicketsScreenNavigationProp } from '../models/Navigation';
 
-export const TicketsScreen = ({ navigation }) => {
+interface Props {
+  navigation: TicketsScreenNavigationProp;
+}
+
+export const TicketsScreen = ({ navigation }: Props) => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   useEffect(() => {
     fetch('http://192.168.0.20:5000/tickets')
@@ -17,7 +28,14 @@ export const TicketsScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <TicketList tickets={tickets} />
+      <Pressable
+        onPress={() => {
+          navigation.navigate('TicketCreate', { submitter_id: 5 });
+        }}
+      >
+        <Text>Create Ticket</Text>
+      </Pressable>
+      <TicketList tickets={tickets} navigation={navigation} />
     </SafeAreaView>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { Ticket } from '../models/Ticket';
 
@@ -9,14 +9,10 @@ interface Props {
 
 export const TicketRow = ({ ticket }: Props) => {
   return (
-    <Pressable onPress={() => {}}>
-      <View style={styles.container}>
-        <Text style={styles.title}>{ticket.title}</Text>
-        <Text style={styles.small}>
-          {moment.utc(ticket.timestamp).fromNow()}
-        </Text>
-      </View>
-    </Pressable>
+    <View style={styles.container}>
+      <Text style={styles.title}>{ticket.title}</Text>
+      <Text style={styles.small}>{moment.utc(ticket.timestamp).fromNow()}</Text>
+    </View>
   );
 };
 
