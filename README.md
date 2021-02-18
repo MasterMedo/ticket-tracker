@@ -1,22 +1,21 @@
 # ticket-tracker
-let's build a bug tracker!
+For development informations refer to the `roadmap.md` file in raw format!
+Contributing information can be found in `CONTRIBUTING.md`
 
-## current state
-refer to the roadmap file, the frontend state can be seen below!
+# current state
+## mobile
+![mobile](./img/mobile.png)
 
-login with JWT tokens:
-![login](./img/login.png)
-
-show tickets within a chosen category:
+## frontend
+show tickets within a chosen category
 ![tickets](./img/tickets.png)
 
-create a ticket with a given category:
+create a ticket with a given category
 ![create-ticket](./img/create-ticket.png)
 
-# todo
+## backend
+swagger api
+![api](./img/api.png)
 
-#### frontend:
-  - move api calls to actions.ts
-  - auth: create useAuthContext
-  - create login page
-  - create header (add logout button)
+classes
+![classes](./img/classes.png)

@@ -48,6 +48,18 @@
           - theme
       - UI tests
 
+    ~ mobile
+      - react-native
+        - components
+          - filterable list
+            - search
+            - query
+            - sort
+          - previews
+        ~ models
+        - navigation
+      - UI tests
+
     ~ back-end
       - functionality
         - subscriptions/listeners
