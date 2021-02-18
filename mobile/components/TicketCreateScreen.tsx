@@ -4,6 +4,7 @@ import {
   TicketCreateScreenNavigationProp,
   TicketCreateScreenRouteProp,
 } from '../models/Navigation';
+import { server } from '../config';
 import { Category } from '../models/Category';
 import { Ticket } from '../models/Ticket';
 
@@ -19,7 +20,7 @@ export const TicketCreateScreen = ({ navigation }: Props) => {
   const [categories, setCategories] = useState<Category[]>();
   const createTicket = () => {
     if (!!title && !!content && category) {
-      fetch('http://192.168.0.20:5000/tickets', {
+      fetch(server + '/tickets', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -44,7 +45,7 @@ export const TicketCreateScreen = ({ navigation }: Props) => {
     }
   };
   useEffect(() => {
-    fetch('http://192.168.0.20:5000/categories')
+    fetch(server + '/categories')
       .then((r) => r.json())
       .then((data: Category[]) => {
         setCategories(data);

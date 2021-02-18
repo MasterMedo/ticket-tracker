@@ -6,6 +6,7 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
+import { server } from '../config';
 import { TicketList } from '../components/TicketList';
 import { Ticket } from '../models/Ticket';
 import { TicketsScreenNavigationProp } from '../models/Navigation';
@@ -17,7 +18,7 @@ interface Props {
 export const TicketsScreen = ({ navigation }: Props) => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   useEffect(() => {
-    fetch('http://192.168.0.155:5000/tickets')
+    fetch(server + '/tickets')
       .then((r) => r.json())
       .then((data: Ticket[]) => {
         setTickets(data || []);
@@ -30,7 +31,7 @@ export const TicketsScreen = ({ navigation }: Props) => {
       <StatusBar barStyle="dark-content" />
       <Pressable
         onPress={() => {
-          navigation.navigate('TicketCreate', { submitter_id: 5 });
+          navigation.navigate('TicketCreate', { submitter_id: 1 });
         }}
       >
         <Text>Create Ticket</Text>
