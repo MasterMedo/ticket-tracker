@@ -1,4 +1,3 @@
-import os
 from datetime import datetime, timedelta
 
 from flask import Flask
@@ -29,11 +28,7 @@ class CustomJSONEncoder(JSONEncoder):
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///C:\Users\zorgo\OneDrive\1\Desktop\Nova mapa\app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", os.urandom(24))
-app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET_KEY", os.urandom(24))
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=7)
+app.config.from_pyfile('config.py')
 app.json_encoder = CustomJSONEncoder
 db.app = app
 db.init_app(app)
@@ -43,4 +38,4 @@ app.register_blueprint(api_bp)
 jwt.init_app(app)
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.155', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
