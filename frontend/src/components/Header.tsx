@@ -19,7 +19,7 @@ export const Header = () => {
         <li style={{display: 'inline'}}>
           <Link to="/users">Users</Link>
         </li>
-        <li style={{padding:100}}>
+        <li style={{display: 'inline'}}>
           <button onClick={authContext.logout}>Logout</button>
         </li>
       </ul>
