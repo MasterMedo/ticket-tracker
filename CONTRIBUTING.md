@@ -27,6 +27,19 @@ pip install python-flask python-flask-bcrypt python-flask-cors python-flask-dote
 ![api](./img/api.png)
 
 ### frontend
+1. position yourself in the `frontend` directory
+2. install npm and yarn
+```sh
+sudo pacman -S npm
+npm install -g yarn
+```
+3. install dependencies
+```sh
+npm install create-react-app react @types/react
+npm install moment @types/moment formik @types/formik react-dom @types/react-dom react-router-dom @types/react-router-dom
+yarn add eslint-config-react-app
+```
+4. run the backend, then run the frontend with `yarn start`
 
 ### mobile
 1. install npm
