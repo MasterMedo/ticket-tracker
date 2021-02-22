@@ -43,9 +43,7 @@ export const Login = () => {
   );
   function showPassword(){
     var passWord=document.getElementById("password") as HTMLInputElement;
-    if (passWord.type!="password") 
+    if (passWord.type !== "password")
       passWord.type="password";
     else passWord.type="string";}
 };
-  
-    
