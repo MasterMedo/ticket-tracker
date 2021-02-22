@@ -27,13 +27,25 @@ export const Login = () => {
       </div>
       <div>
         <input className="block ticket-form-title"
-          id="password" name="password" type="string"
+          id="password" name="password" type="password"
           placeholder="password"
           onChange={formik.handleChange}
           value={formik.values.password}
         />
       </div>
+      <div>
+          Show Password
+          <input type="checkbox"
+          onClick={() => showPassword()}/>
+      </div>
       <button type="submit">Submit</button>
     </form>
   );
+  function showPassword(){
+    var passWord=document.getElementById("password") as HTMLInputElement;
+    if (passWord.type!="password") 
+      passWord.type="password";
+    else passWord.type="string";}
 };
+  
+    
