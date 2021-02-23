@@ -37,7 +37,6 @@ export const TicketRow = ({ticket}: Props) => {
         </div>
         <button onClick={() => {
           deleteTicket(ticket.id);
-          history.go(0);
         }}>delete</button>
       </div>
     </div>
